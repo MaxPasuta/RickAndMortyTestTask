@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - PersonDetailModel
-struct PersonDetailModel: Codable {
+struct PersonDetail: Codable {
     let name, status, species, type: String
     let gender: String
     let origin, location: Location

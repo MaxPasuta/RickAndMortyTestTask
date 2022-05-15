@@ -7,22 +7,25 @@
 
 import Foundation
 
-class NetworkDataFetch {
+protocol NetworkDataFetchProtocol {
+//    var firstPage:String {get}
+    func fetch20Persons(urlString: String, responce: @escaping(Persons?, Error?) -> Void)
+    func fetchDetailPerson(id: Int, responce: @escaping(PersonDetail?, Error?) -> Void)
+    var firtsPage: String {get}
+}
+
+class NetworkDataFetch:NetworkDataFetchProtocol {
     
-    static let shared = NetworkDataFetch()
+    public var firtsPage = "https://rickandmortyapi.com/api/character/?page=1"
     
-    private init() {}
-    
-    public let firstPage = "https://rickandmortyapi.com/api/character/?page=1"
-    
-    public func fetch20Persons(urlString: String, responce: @escaping(PersonsModel?, Error?) -> Void){
+    public func fetch20Persons(urlString: String, responce: @escaping(Persons?, Error?) -> Void){
         
         NetworkRequest.shated.requestData(urlString: urlString) { result in
             
             switch result {
             case .success(let data):
                 do {
-                    let data = try JSONDecoder().decode(PersonsModel.self, from: data)
+                    let data = try JSONDecoder().decode(Persons.self, from: data)
                     responce(data, nil)
                     
                 } catch let jsonerror{
@@ -36,7 +39,7 @@ class NetworkDataFetch {
         }
     }
     
-    public func fetchDetailPerson(id: Int, responce: @escaping(PersonDetailModel?, Error?) -> Void){
+    public func fetchDetailPerson(id: Int, responce: @escaping(PersonDetail?, Error?) -> Void){
 
         let urlString = "https://rickandmortyapi.com/api/character/\(id)"
         
@@ -45,7 +48,7 @@ class NetworkDataFetch {
             switch result {
             case .success(let data):
                 do {
-                    let data = try JSONDecoder().decode(PersonDetailModel.self, from: data)
+                    let data = try JSONDecoder().decode(PersonDetail.self, from: data)
                     responce(data, nil)
                     
                 } catch let jsonerror{

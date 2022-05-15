@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - PersonsModel
-struct PersonsModel: Codable {
+struct Persons: Codable {
     let info: Info
     let results: [Result]
 }
